@@ -6,6 +6,8 @@
     "Shows how to deploy a C++ application to Cloud Run."
   ],
   "dependencies": [
-    "functions-framework-cpp"
+    "functions-framework-cpp",
+    "nlohmann-json",
+    "mongocxx"
   ]
 }

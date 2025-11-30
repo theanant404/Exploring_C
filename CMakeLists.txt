@@ -1,16 +1,29 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.10)
+project(cloud_run_hello)
 
-# Define the project name and where to report bugs.
-set(PACKAGE_BUGREPORT
-    "https://github.com/GoogleCloudPlatform/cpp-samples/issues")
-project(cpp-samples-cloud-run-hello-world CXX)
+# Find the Functions Framework for C++
+# This will install the framework if it is not already installed.
+find_package(functions-framework-cpp REQUIRED)
 
-find_package(functions_framework_cpp REQUIRED)
-find_package(Threads)
+# Find the nlohmann-json library
+find_package(nlohmann_json REQUIRED)
 
-add_executable(cloud_run_hello cloud_run_hello.cc)
-target_compile_features(cloud_run_hello PRIVATE cxx_std_17)
-target_link_libraries(cloud_run_hello functions-framework-cpp::framework)
+# Find the mongocxx library
+find_package(mongocxx REQUIRED)
 
-include(GNUInstallDirs)
-install(TARGETS cloud_run_hello RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+# Add the executable
+add_executable(cloud_run_hello
+    cloud_run_hello.cc
+    auth_service.cc
+    auth_service.h
+    mongodb_service.cc
+    mongodb_service.h
+)
+
+# Link against the Functions Framework library, nlohmann-json and mongocxx
+target_link_libraries(cloud_run_hello
+    PRIVATE
+    functions-framework-cpp::functions-framework-cpp
+    nlohmann_json::nlohmann_json
+    mongocxx::mongocxx
+)
